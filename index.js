@@ -13,7 +13,6 @@ exports.changeIp = async (req, res) => {
     try {
       const records = await zone.getRecords('a');
       records[0].forEach(async (record) => {
-        console.log('compare', record.name, recordToChange);
         if (record.name === recordToChange) {
 
           const newARecord = zone.record('a', {
@@ -28,8 +27,6 @@ exports.changeIp = async (req, res) => {
           };
 
           const [change, apiResponse] = await zone.createChange(changes);
-          console.log('change', change);
-          console.log('apiResponse', apiResponse);
         }
       });
     } catch (ex) {
@@ -37,6 +34,7 @@ exports.changeIp = async (req, res) => {
       res.status(500).send(ex);
     } finally {
       res.send({ success: true });
+      console.log('Success');
     }
   } else {
     console.log('User tried to change record with wrong record info or key', key, recordToChange, process.env.KEY);
